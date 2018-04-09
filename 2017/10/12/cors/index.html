@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Testing,Another Tag," />
+  <meta name="keywords" content="AJAX,CORS," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="ssssss">
-<meta name="keywords" content="Testing,Another Tag">
+<meta name="description" content="express支持跨域中间件 ajax请求必须配置 withCredentials的值为true，否则请求是不会带凭据的(cookie、HTTP认证及客户端SSL证明等) 服务端接收带凭据的请求必须设置响应头属性 Access-Control-Allow-Credentials 为 true 否则浏览器不会把响应交给js（即responseText为空，status的值为0，而且会调用onerro">
+<meta name="keywords" content="AJAX,CORS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="test">
-<meta property="og:url" content="http://yoursite.com/2017/12/29/test/index.html">
+<meta property="og:title" content="express使用CORS跨域资源共享设置中遇到的一些坑">
+<meta property="og:url" content="http://yoursite.com/2017/10/12/cors/index.html">
 <meta property="og:site_name" content="Mr. Blue&#39;s breakfast">
-<meta property="og:description" content="ssssss">
+<meta property="og:description" content="express支持跨域中间件 ajax请求必须配置 withCredentials的值为true，否则请求是不会带凭据的(cookie、HTTP认证及客户端SSL证明等) 服务端接收带凭据的请求必须设置响应头属性 Access-Control-Allow-Credentials 为 true 否则浏览器不会把响应交给js（即responseText为空，status的值为0，而且会调用onerro">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-29T06:23:27.000Z">
+<meta property="og:updated_time" content="2018-04-09T15:40:13.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="test">
-<meta name="twitter:description" content="ssssss">
+<meta name="twitter:title" content="express使用CORS跨域资源共享设置中遇到的一些坑">
+<meta name="twitter:description" content="express支持跨域中间件 ajax请求必须配置 withCredentials的值为true，否则请求是不会带凭据的(cookie、HTTP认证及客户端SSL证明等) 服务端接收带凭据的请求必须设置响应头属性 Access-Control-Allow-Credentials 为 true 否则浏览器不会把响应交给js（即responseText为空，status的值为0，而且会调用onerro">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/12/29/test/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/10/12/cors/"/>
 
 
 
 
 
-  <title>test | Mr. Blue's breakfast</title>
+  <title>express使用CORS跨域资源共享设置中遇到的一些坑 | Mr. Blue's breakfast</title>
   
 
 
@@ -253,7 +253,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/29/test/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/12/cors/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="zeebin">
@@ -270,7 +270,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">test</h1>
+          <h1 class="post-title" itemprop="name headline">express使用CORS跨域资源共享设置中遇到的一些坑</h1>
         
 
         <div class="post-meta">
@@ -282,8 +282,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T14:22:07+08:00">
-                2017-12-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-12T00:22:07+08:00">
+                2017-10-12
               </time>
             
 
@@ -320,7 +320,14 @@
       
 
       
-        <p>ssssss</p>
+        <h3 id="express支持跨域中间件"><a href="#express支持跨域中间件" class="headerlink" title="express支持跨域中间件"></a>express支持跨域中间件</h3><ul>
+<li>ajax请求必须配置 <code>withCredentials</code>的值为<code>true</code>，否则请求是不会带凭据的(cookie、HTTP认证及客户端SSL证明等)</li>
+<li>服务端接收带凭据的请求必须设置响应头属性 <code>Access-Control-Allow-Credentials</code> 为 <code>true</code> 否则浏览器不会把响应交给js（即responseText为空，status的值为0，而且会调用onerror()事件处理程序）</li>
+<li>当设置了 <code>withCredentials</code>的值为<code>true</code>  时服务端的 <code>Access-Control-Allow-Origin</code> 的属性不能为 <code>*</code> ，如有需要，需单独设置对应的响应头如<code>req.headers.origin</code></li>
+<li>IE10及更早版本都不支持 <code>withCredentials</code> 使用 <code>XDomainRequest</code></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">setCORS() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function">(<span class="params">req, res, next</span>) =&gt;</span> &#123;</span><br><span class="line">      res.header(<span class="string">"Access-Control-Allow-Origin"</span>, req.headers.origin);</span><br><span class="line">      res.header(<span class="string">"Access-Control-Allow-Credentials"</span>, <span class="literal">true</span>);</span><br><span class="line">      res.header(<span class="string">"Access-Control-Allow-Headers"</span>, <span class="string">"Content-Type,Content-Length, Authorization, Accept,X-Requested-With"</span>);</span><br><span class="line">      res.header(<span class="string">"Access-Control-Allow-Methods"</span>, <span class="string">"PUT,POST,GET,DELETE,OPTIONS"</span>);</span><br><span class="line">      <span class="comment">// res.header("X-Powered-By", '3.2.1');</span></span><br><span class="line">      <span class="keyword">if</span> (req.method === <span class="string">'OPTIONS'</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> res.send(<span class="string">'support CORS'</span>)</span><br><span class="line">      &#125;</span><br><span class="line">      next();</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;,</span><br></pre></td></tr></table></figure>
+<p>其他参考 ：<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/withCredentials" target="_blank" rel="noopener">XMLHttpRequest.withCredentials</a></p>
 
       
     </div>
@@ -331,35 +338,6 @@
     
 
     
-      <div>
-        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-  <div>Donate comment here</div>
-  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>打赏</span>
-  </button>
-  <div id="QR" style="display: none;">
-
-    
-      <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="zeebin 微信支付"/>
-        <p>微信支付</p>
-      </div>
-    
-
-    
-      <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="/images/alipay.jpg" alt="zeebin 支付宝"/>
-        <p>支付宝</p>
-      </div>
-    
-
-    
-
-  </div>
-</div>
-
-      </div>
-    
 
     
 
@@ -367,9 +345,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Testing/" rel="tag"># Testing</a>
+            <a href="/tags/AJAX/" rel="tag"># AJAX</a>
           
-            <a href="/tags/Another-Tag/" rel="tag"># Another Tag</a>
+            <a href="/tags/CORS/" rel="tag"># CORS</a>
           
         </div>
       
@@ -382,8 +360,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/29/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2017/06/15/redux/" rel="next" title="react-redux 原理及基本实现">
+                <i class="fa fa-chevron-left"></i> react-redux 原理及基本实现
               </a>
             
           </div>
@@ -391,10 +369,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/29/classdemo/" rel="prev" title="classdemo">
-                classdemo <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -446,8 +420,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -466,7 +449,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -479,7 +462,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -498,12 +481,6 @@
                         <i class="fa fa-fw fa-github"></i>GitHub</a>
                   </span>
                 
-                  <span class="links-of-author-item">
-                    <a href="https://weibo.com/bluesirl" target="_blank" title="微博">
-                      
-                        <i class="fa fa-fw fa-weibo"></i>微博</a>
-                  </span>
-                
             </div>
           
 
@@ -511,20 +488,6 @@
           
 
           
-          
-            <div class="links-of-blogroll motion-element links-of-blogroll-block">
-              <div class="links-of-blogroll-title">
-                <i class="fa  fa-fw fa-link"></i>
-                链接
-              </div>
-              <ul class="links-of-blogroll-list">
-                
-                  <li class="links-of-blogroll-item">
-                    <a href="https://github.com/bluesirl" title="GitHub" target="_blank">GitHub</a>
-                  </li>
-                
-              </ul>
-            </div>
           
 
           
@@ -532,6 +495,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#express支持跨域中间件"><span class="nav-number">1.</span> <span class="nav-text">express支持跨域中间件</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
